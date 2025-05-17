@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Donate Produce - Carrer Beacon{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 py-8">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/vendordash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-store mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a href="/vendordash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-arrow-left mr-1"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-bold text-green-600 mb-6">
+            <i class="fas fa-hand-holding-heart mr-2"></i>Donate Produce
+        </h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('vendor_donate') }}" class="space-y-6">
+            <div>
+                <label for="item_name" class="block text-sm font-medium text-gray-700">Item Name</label>
+                <input type="text" name="item_name" id="item_name" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+
+            <div>
+                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity (in kg)</label>
+                <input type="number" step="0.01" name="quantity" id="quantity" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+            </div>
+
+            <div>
+                <label for="vendor_address" class="block text-sm font-medium text-gray-700">Pickup Address</label>
+                <textarea name="vendor_address" id="vendor_address" rows="3" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"></textarea>
+            </div>
+
+            <div>
+                <label for="vendor_phone" class="block text-sm font-medium text-gray-700">Contact Phone Number</label>
+                <input type="tel" name="vendor_phone" id="vendor_phone" required pattern="[0-9]{10}"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500">
+                <p class="mt-1 text-sm text-gray-500">Please enter a 10-digit phone number</p>
+            </div>
+
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg inline-flex items-center">
+                    <i class="fas fa-heart mr-2"></i>
+                    Submit Donation
+                </button>
+            </div>
+        </form>
+
+        <!-- Display Previous Donations -->
+        <div class="mt-12">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Your Previous Donations</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for donation in donations %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ donation[1] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ donation[2] }} kg</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    {% if donation[6] == 'available' %}
+                                        bg-green-100 text-green-800
+                                    {% else %}
+                                        bg-gray-100 text-gray-800
+                                    {% endif %}">
+                                    {{ donation[6] }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ donation[5].split()[0] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const phone = document.getElementById('vendor_phone').value;
+        if (!/^\d{10}$/.test(phone)) {
+            e.preventDefault();
+            alert('Please enter a valid 10-digit phone number');
+        }
+    });
+</script>
+{% endblock %}

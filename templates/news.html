@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agricultural News - Carrer Beacon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-leaf mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-arrow-left mr-1"></i>Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">
+            <i class="fas fa-newspaper text-green-600 mr-2"></i>Agricultural News
+        </h1>
+
+        <!-- News Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for news in news_items %}
+            <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
+                <div class="flex flex-col h-full">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-sm text-gray-500">{{ news.source }}</span>
+                        <span class="text-sm text-gray-500">{{ news.date }}</span>
+                    </div>
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4 flex-grow">{{ news.title }}</h2>
+                    <a href="{{ news.link }}" target="_blank" 
+                       class="inline-flex items-center text-green-600 hover:text-green-700">
+                        Read More
+                        <i class="fas fa-external-link-alt ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- No News Message -->
+        {% if not news_items %}
+        <div class="text-center py-12">
+            <i class="fas fa-newspaper text-gray-400 text-5xl mb-4"></i>
+            <p class="text-gray-500">No news articles available at the moment.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    {% include 'chat_include.html' %}
+</body>
+</html>

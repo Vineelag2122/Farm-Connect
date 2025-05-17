@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soil Analysis - Carrer Beacon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-leaf mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/farmerdash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/weather" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-cloud-sun mr-1"></i>Weather
+                    </a>
+                    <a href="/soil" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-seedling mr-1"></i>Soil Analysis
+                    </a>
+                    <a href="/vegprices" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Market Prices
+                    </a>
+                    <a href="/chatbot" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-robot mr-1"></i>Chatbot
+                    </a>
+                    <a href="/rrb" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-university mr-1"></i>RRB Info
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center">
+                    <span class="text-gray-700 mr-4">Welcome, Farmer!</span>
+                    <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <i class="fas fa-bars text-gray-500 text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="/farmerdash" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-home mr-2"></i>Home
+            </a>
+            <a href="/weather" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-cloud-sun mr-2"></i>Weather
+            </a>
+            <a href="/soil" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-seedling mr-2"></i>Soil Analysis
+            </a>
+            <a href="/vegprices" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-chart-line mr-2"></i>Market Prices
+            </a>
+            <a href="/chatbot" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-robot mr-2"></i>Chatbot
+            </a>
+            <a href="/rrb" class="block text-gray-700 hover:text-green-600 px-4 py-2">
+                <i class="fas fa-university mr-2"></i>RRB Info
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Soil Analysis Form -->
+            <div class="bg-white rounded-xl shadow-sm p-8">
+                <h1 class="text-2xl font-bold mb-6 flex items-center">
+                    <i class="fas fa-seedling text-green-500 mr-3"></i>
+                    Soil Analysis
+                </h1>
+
+                <div class="space-y-6">
+                    <div>
+                        <label for="soilType" class="block text-sm font-medium text-gray-700 mb-2">Select Soil Type</label>
+                        <select 
+                            id="soilType" 
+                            onchange="showRecommendation()" 
+                            class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        >
+                            <option value="">--Choose Soil Type--</option>
+                            <option value="black">Black Soil</option>
+                            <option value="red">Red Soil</option>
+                            <option value="alluvial">Alluvial Soil</option>
+                            <option value="laterite">Laterite Soil</option>
+                            <option value="loamy">Loamy Soil</option>
+                        </select>
+                    </div>
+
+                    <div id="soilRecommendation"></div>
+                </div>
+            </div>
+
+            <!-- Soil Information -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        About Soil Types
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-2">Black Soil</h3>
+                            <p class="text-gray-600 text-sm">Rich in calcium, potassium, and magnesium. Excellent for cotton and wheat cultivation.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-2">Red Soil</h3>
+                            <p class="text-gray-600 text-sm">Rich in iron but poor in nitrogen. Good for groundnut and potato farming.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-2">Alluvial Soil</h3>
+                            <p class="text-gray-600 text-sm">Very fertile and rich in humus. Perfect for rice and wheat cultivation.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-2">Laterite Soil</h3>
+                            <p class="text-gray-600 text-sm">Poor in fertility but good drainage. Suitable for tea and coffee plantations.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <h3 class="font-semibold text-gray-800 mb-2">Loamy Soil</h3>
+                            <p class="text-gray-600 text-sm">Perfect balance of minerals and drainage. Suitable for most crops.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-8">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        Soil Care Tips
+                    </h2>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Regular soil testing to monitor nutrient levels</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Maintain proper soil pH for optimal nutrient absorption</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Practice crop rotation to prevent soil depletion</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>Add organic matter to improve soil structure</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        function showRecommendation() {
+            const soilType = document.getElementById('soilType').value;
+            const recommendationDiv = document.getElementById('soilRecommendation');
+            
+            const recommendations = {
+                'black': {
+                    crops: 'Cotton, Wheat, Sugarcane, Jowar',
+                    characteristics: 'High water retention, rich in calcium, self-ploughing nature',
+                    ph: '7.5 - 8.5',
+                    management: 'Add organic matter, maintain proper drainage'
+                },
+                'red': {
+                    crops: 'Groundnut, Potato, Rice, Ragi',
+                    characteristics: 'Rich in iron, good drainage, poor in nitrogen',
+                    ph: '6.5 - 7.0',
+                    management: 'Regular nitrogen fertilization, organic manure application'
+                },
+                'alluvial': {
+                    crops: 'Rice, Wheat, Sugarcane, Jute',
+                    characteristics: 'Fertile, rich in humus and NPK',
+                    ph: '6.8 - 7.5',
+                    management: 'Maintain organic matter content, prevent waterlogging'
+                },
+                'laterite': {
+                    crops: 'Cashew, Tea, Coffee, Rubber',
+                    characteristics: 'Poor in fertility, good drainage, acidic nature',
+                    ph: '5.5 - 6.5',
+                    management: 'Lime application, organic matter addition'
+                },
+                'loamy': {
+                    crops: 'Most crops suitable including vegetables and fruits',
+                    characteristics: 'Balanced nutrients, good drainage, ideal texture',
+                    ph: '6.0 - 7.0',
+                    management: 'Regular organic matter addition, balanced fertilization'
+                }
+            };
+            
+            if (soilType && recommendations[soilType]) {
+                recommendationDiv.innerHTML = `
+                    <div class="bg-green-50 p-6 rounded-lg space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Suitable Crops</h3>
+                            <p class="text-gray-600">${recommendations[soilType].crops}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Characteristics</h3>
+                            <p class="text-gray-600">${recommendations[soilType].characteristics}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Ideal pH Range</h3>
+                            <p class="text-gray-600">${recommendations[soilType].ph}</p>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-1">Management Tips</h3>
+                            <p class="text-gray-600">${recommendations[soilType].management}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                recommendationDiv.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html>

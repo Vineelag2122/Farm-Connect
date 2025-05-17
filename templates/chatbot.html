@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 1.5 Flash Chatbot</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        #chatbox {
+            width: 80%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+            height: 400px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .user {
+            background-color: #007bff;
+            color: white;
+            text-align: right;
+        }
+
+        .bot {
+            background-color: #28a745;
+            color: white;
+            text-align: left;
+        }
+
+        .error {
+            background-color: #dc3545;
+            color: white;
+            text-align: left;
+        }
+
+        #input-area {
+            display: flex;
+            width: 80%;
+            max-width: 600px;
+            align-items: center;
+        }
+
+        #text-input, #language-select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #text-input {
+            flex-grow: 1;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #voice-btn {
+            background-color: #dc3545;
+        }
+
+        #voice-btn:hover {
+            background-color: #a71d2a;
+        }
+
+        #audio-player {
+            margin-top: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+    
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <h1 style="color: aliceblue;">Gemini 1.5 Flash Chatbot</h1>
+
+    <div id="chatbox"></div>
+    <div id="input-area">
+        <select id="language-select">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="te">Telugu</option>
+        </select>
+        <input type="text" id="text-input" placeholder="Type your message...">
+        <button onclick="sendText()">Send</button>
+        <button id="voice-btn" onclick="startVoice()">Voice Input</button>
+    </div>
+    <audio id="audio-player" controls></audio>
+
+    <script>
+        // 3D Starfield Background
+        const canvas = document.getElementById("bg-canvas");
+        const ctx = canvas.getContext("2d");
+
+        let stars = [];
+        const numStars = 250;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    z: Math.random() * canvas.width
+                });
+            }
+        }
+
+        function drawStars() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "white";
+            for (let i = 0; i < numStars; i++) {
+                const star = stars[i];
+
+                star.z -= 2;
+                if (star.z <= 0) {
+                    star.z = canvas.width;
+                }
+
+                const k = 128.0 / star.z;
+                const px = star.x * k + canvas.width / 2;
+                const py = star.y * k + canvas.height / 2;
+
+                if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+                    const size = (1 - star.z / canvas.width) * 2;
+                    ctx.beginPath();
+                    ctx.arc(px, py, size, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+
+            requestAnimationFrame(drawStars);
+        }
+
+        initStars();
+        drawStars();
+    </script>
+
+    <script>
+        function addMessage(text, type) {
+            const chatbox = document.getElementById("chatbox");
+            const message = document.createElement("div");
+            message.className = `message ${type}`;
+            message.textContent = text;
+            chatbox.appendChild(message);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        async function sendText() {
+            const inputField = document.getElementById("text-input");
+            const languageSelect = document.getElementById("language-select");
+            const audioPlayer = document.getElementById("audio-player");
+            const input = inputField.value.trim();
+            const language = languageSelect.value;
+            if (!input) {
+                console.log("No text input provided");
+                addMessage("Please enter a message", "error");
+                return;
+            }
+            console.log(`Sending text: ${input}, language: ${language}`);
+            addMessage(input, "user");
+            try {
+                const response = await fetch("/process_text", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `text_input=${encodeURIComponent(input)}&language=${encodeURIComponent(language)}`
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Text response:", data);
+                if (data.response) {
+                    addMessage(data.response, data.response.startsWith("Error") ? "error" : "bot");
+                    if (data.audio_url) {
+                        audioPlayer.src = data.audio_url;
+                        audioPlayer.play().catch(error => {
+                            console.error("Audio playback error:", error);
+                            addMessage("Error playing audio", "error");
+                        });
+                    }
+                } else {
+                    addMessage("No response from server", "error");
+                }
+            } catch (error) {
+                console.error("Text input error:", error);
+                addMessage(`Client error: ${error.message}`, "error");
+            }
+            inputField.value = "";
+        }
+
+        async function startVoice() {
+            const voiceBtn = document.getElementById("voice-btn");
+            const languageSelect = document.getElementById("language-select");
+            const audioPlayer = document.getElementById("audio-player");
+            const language = languageSelect.value;
+            voiceBtn.textContent = "Listening...";
+            voiceBtn.disabled = true;
+            console.log(`Starting voice input, language: ${language}`);
+            try {
+                const response = await fetch("/process_voice", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `language=${encodeURIComponent(language)}`
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log("Voice response:", data);
+                if (data.input) {
+                    addMessage(data.input, "user");
+                }
+                if (data.response) {
+                    addMessage(data.response, data.response.startsWith("Error") || data.response.includes("Sorry") ? "error" : "bot");
+                    if (data.audio_url) {
+                        audioPlayer.src = data.audio_url;
+                        audioPlayer.play().catch(error => {
+                            console.error("Audio playback error:", error);
+                            addMessage("Error playing audio", "error");
+                        });
+                    }
+                } else {
+                    addMessage("No response from server", "error");
+                }
+            } catch (error) {
+                console.error("Voice input error:", error);
+                addMessage(`Client error: ${error.message}`, "error");
+            }
+            voiceBtn.textContent = "Voice Input";
+            voiceBtn.disabled = false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!-- vegprices.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vegetable Prices</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Latest Vegetable Prices</h1>
+    
+    {% if prices %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Vegetable</th>
+                    <th>Wholesale Price</th>
+                    <th>Retail Price</th>
+                    <th>Shopping Mall Price</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in prices %}
+                <tr>
+                    <td>{{ item.vegetable }}</td>
+                    <td>{{ item.wholesale_price }}</td>
+                    <td>{{ item.retail_price }}</td>
+                    <td>{{ item.shopping_mall_price }}</td>
+                    <td>{{ item.unit }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No price data available at the moment.</p>
+    {% endif %}
+</body>
+</html>

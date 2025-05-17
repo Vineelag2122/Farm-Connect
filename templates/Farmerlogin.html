@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style2.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Document</title>
+    <script>
+function validEmail() {
+    let emailField = document.getElementById("logemail");
+    let errorMsg = document.getElementById("email-error");
+    let email = emailField.value.trim();
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;    
+
+    if (email.length === 0) {
+        emailField.style.border = "2px solid red";
+        errorMsg.innerText = "Email cannot be empty";
+        return false;
+    }
+
+    if (!emailPattern.test(email)) {
+        emailField.style.border = "2px solid red";
+        errorMsg.innerText = "Invalid Email format (e.g., your_name@domain.com)";
+        return false;
+    }
+
+    emailField.style.border = "2px solid green";
+    errorMsg.innerText = ""; // Clear error message
+    return true;
+}
+
+function validemail() {
+    let emailField = document.getElementById("logmail");
+    let errorMsg = document.getElementById("email-eror");
+    let email = emailField.value.trim();
+    let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;  // Standard email regex
+
+    if (email.length === 0) {
+        emailField.style.border = "2px solid red";
+        errorMsg.innerText = "Email cannot be empty";
+        return false;
+    }
+
+    if (!emailPattern.test(email)) {
+        emailField.style.border = "2px solid red";
+        errorMsg.innerText = "Invalid Email format (e.g., your_name@domain.com)";
+        return false;
+    }
+
+    emailField.style.border = "2px solid green"; // Valid email
+    errorMsg.innerText = ""; // Clear error message
+    return true;
+}
+
+function validPassword() {
+    let passwordField = document.getElementById("logpass");
+    let errorMsg = document.getElementById("password-error");
+    let password = passwordField.value.trim();
+
+    let up = 0, lc = 0, num = 0, cha = 0;
+
+    if (password.length === 0) {
+        passwordField.style.border = "2px solid red";
+        errorMsg.innerText = "Password cannot be empty";
+        return false;
+    }
+
+    for (let i = 0; i < password.length; i++) {
+        let char = password[i];
+
+        if (char >= 'A' && char <= 'Z') up++; 
+        else if (char >= 'a' && char <= 'z') lc++; 
+        else if (char >= '0' && char <= '9') num++;
+        else cha++; // If it's not a letter or number, count it as a special character
+    }
+
+    if (up > 0 && lc > 0 && num > 0 && cha > 0 && password.length >= 8) {
+        passwordField.style.border = "2px solid green";
+        errorMsg.innerText = ""; // Clear error message
+        return true;
+    } else {
+        passwordField.style.border = "2px solid red";
+        errorMsg.innerText = "Must have: 1 uppercase, 1 lowercase, 1 number, 1 special char, min 8 chars";
+        return false;
+    }
+}
+
+function validpassword() {
+    let passwordField = document.getElementById("logpas");
+    let errorMsg = document.getElementById("pass-error");
+    let password = passwordField.value.trim();
+
+    let up = 0, lc = 0, num = 0, cha = 0;
+
+    if (password.length === 0) {
+        passwordField.style.border = "2px solid red";
+        errorMsg.innerText = "Password cannot be empty";
+        return false;
+    }
+
+    for (let i = 0; i < password.length; i++) {
+        let char = password[i];
+
+        if (char >= 'A' && char <= 'Z') up++; 
+        else if (char >= 'a' && char <= 'z') lc++; 
+        else if (char >= '0' && char <= '9') num++;
+        else cha++; // If it's not a letter or number, count it as a special character
+    }
+
+    if (up > 0 && lc > 0 && num > 0 && cha > 0 && password.length >= 8) {
+        passwordField.style.border = "2px solid green";
+        errorMsg.innerText = ""; // Clear error message
+        return true;
+    } else {
+        passwordField.style.border = "2px solid red";
+        errorMsg.innerText = "Must have: 1 uppercase, 1 lowercase, 1 number, 1 special char, min 8 chars";
+        return false;
+    }
+}
+
+function validateNameOnSubmit() {
+    let nameInput = document.getElementById("logname");
+    let nameError = document.getElementById("fullname-error");
+    let nameValue = nameInput.value.trim();
+
+    // Clear previous error
+    nameError.textContent = "";
+    nameInput.style.border = "2px solid green"; // Default to valid
+
+    if (nameValue === "") {
+        nameInput.style.border = "2px solid red";
+        nameError.textContent = "Full name cannot be empty.";
+        return false;
+    }
+
+    if (!/^[A-Za-z\s]+$/.test(nameValue)) {
+        nameInput.style.border = "2px solid red";
+        nameError.textContent = "Name can only contain letters and spaces.";
+        return false;
+    }
+
+    if (nameValue.length < 2) {
+        nameInput.style.border = "2px solid red";
+        nameError.textContent = "Name must be at least 2 characters long.";
+        return false;
+    }
+
+    return true; // Valid input
+}
+
+    </script>
+</head>
+
+<body>
+
+    <a href="https://front.codes/" class="logo" target="_blank"> </a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+   
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 text-center align-self-center py-5">
+                    <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                        <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" />
+                        <label for="reg-log"></label>
+                        <div class="card-3d-wrap mx-auto">
+                            <div class="card-3d-wrapper">
+                                <div class="card-front">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Farmer Log In</h4>
+                                            <small id="email-error" class="text-danger"></small>
+                                            <!-- Login Form -->
+                                            <form action="/Farmerlogin" method="POST">
+                                                <input type="hidden" name="action" value="login">    
+                                                <div class="form-group">
+                                                    <input type="email" name="logemail" class="form-style"
+                                                        placeholder="Your Email" id="logemail" autocomplete="off" oninput="validEmail()">
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <small id="password-error" style="color: red;"></small>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="logpass" class="form-style"
+                                                        placeholder="Your Password" id="logpass" autocomplete="off" oninput="validPassword()">
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" class="btn mt-4">Log In</button>
+                                            </form>
+                                            <div class="d-flex justify-content-between">
+                                                <p class="mb-0 mt-4 text-left"><a href="password_reset.html" class="link">Forgot your password?</a></p>
+                                                <p class="mb-0 mt-4 text-right"><a href="#0" class="link">login with google</a></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-back">
+                                    <div class="center-wrap">
+                                        <div class="section text-center">
+                                            <h4 class="mb-4 pb-3">Farmer Sign Up</h4>
+                                            <!-- Signup Form -->
+                                            <form action="/Farmerlogin" method="POST">
+                                                <input type="hidden" name="action" value="signup">
+                                                <small id="fullname-error" class="text-danger"></small>
+                                                <div class="form-group">
+                                                    <input type="text" name="logname" class="form-style"
+                                                        placeholder="Your Full Name" id="logname" autocomplete="off" oninput="validateNameOnSubmit()">
+                                                    <i class="input-icon uil uil-user"></i>
+                                                </div>
+                                                <small id="email-eror" class="text-danger"></small>
+                                                <div class="form-group mt-2">
+                                                    <input type="email" name="logemail" class="form-style"
+                                                        placeholder="Your Email" id="logmail" autocomplete="off" oninput="validemail()">
+                                                    <i class="input-icon uil uil-at"></i>
+                                                </div>
+                                                <small id="pass-error" style="color: red;"></small>
+                                                <div class="form-group mt-2">
+                                                    <input type="password" name="logpass" class="form-style"
+                                                        placeholder="Your Password" id="logpas" autocomplete="off" oninput="validpassword()">
+                                                    <i class="input-icon uil uil-lock-alt"></i>
+                                                </div>
+                                                <button type="submit" class="btn mt-4">Sign up</button>
+                                            </form>
+                                            <p class="mb-0 mt-4 text-right"><a href="#0" class="link">login with google</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

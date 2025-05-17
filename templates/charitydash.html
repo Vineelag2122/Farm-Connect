@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Charity Dashboard - Career Beacon{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="/charitydash" class="text-xl font-bold text-purple-600">
+                        <i class="fas fa-hand-holding-heart mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/charitydash" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/charity/claimed" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-box-open mr-1"></i>Claimed Donations
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center">
+                    <span class="text-gray-700 mr-4">Welcome, {{ charity_name }}!</span>
+                    <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button text-gray-500 hover:text-purple-600 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="mobile-menu hidden md:hidden">
+                <a href="/charitydash" class="block text-gray-700 hover:text-purple-600 px-3 py-2">
+                    <i class="fas fa-home mr-1"></i>Home
+                </a>
+                <a href="/charity/claimed" class="block text-gray-700 hover:text-purple-600 px-3 py-2">
+                    <i class="fas fa-box-open mr-1"></i>Claimed Donations
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold text-purple-600 mb-6">
+                <i class="fas fa-gift mr-2"></i>Available Donations
+            </h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for donation in donations %}
+                <div class="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ donation[1] }}</h3>
+                            <span class="px-2.5 py-0.5 text-sm font-medium rounded-full bg-green-100 text-green-800">
+                                Available
+                            </span>
+                        </div>
+                        <div class="space-y-2 text-sm text-gray-600">
+                            <p class="flex items-center">
+                                <i class="fas fa-weight-hanging w-5 mr-2"></i>
+                                Quantity: {{ donation[2] }} kg
+                            </p>
+                            <p class="flex items-center">
+                                <i class="fas fa-user w-5 mr-2"></i>
+                                Donor: {{ donation[6] }}
+                            </p>
+                            <p class="flex items-center">
+                                <i class="fas fa-map-marker-alt w-5 mr-2"></i>
+                                Location: {{ donation[3] }}
+                            </p>
+                            <p class="flex items-center">
+                                <i class="fas fa-phone w-5 mr-2"></i>
+                                Contact: {{ donation[4] }}
+                            </p>
+                            <p class="flex items-center">
+                                <i class="fas fa-calendar w-5 mr-2"></i>
+                                Posted: {{ donation[5] }}
+                            </p>
+                        </div>
+                        <div class="mt-6">
+                            <form method="POST" action="{{ url_for('claim_donation', donation_id=donation[0]) }}">
+                                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg inline-flex items-center justify-center">
+                                    <i class="fas fa-hand-holding mr-2"></i>
+                                    Claim Donation
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-full text-center py-8">
+                    <i class="fas fa-box-open text-4xl text-gray-400 mb-4"></i>
+                    <p class="text-gray-500">No donations available at the moment.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+        document.querySelector('.mobile-menu').classList.toggle('hidden');
+    });
+</script>
+{% endblock %}

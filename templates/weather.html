@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Check - Carrer Beacon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-leaf mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/farmerdash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/weather" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-cloud-sun mr-1"></i>Weather
+                    </a>
+                    <a href="/soil" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-seedling mr-1"></i>Soil Analysis
+                    </a>
+                    <a href="/vegprices" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Market Prices
+                    </a>
+                    <a href="/chatbot" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-robot mr-1"></i>Chatbot
+                    </a>
+                    <a href="/rrb" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-university mr-1"></i>RRB Info
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center">
+                    <span class="text-gray-700 mr-4">Welcome, Farmer!</span>
+                    <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <i class="fas fa-bars text-gray-500 text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="/farmerdash" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-home mr-2"></i>Home
+            </a>
+            <a href="/weather" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-cloud-sun mr-2"></i>Weather
+            </a>
+            <a href="/soil" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-seedling mr-2"></i>Soil Analysis
+            </a>
+            <a href="/vegprices" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-chart-line mr-2"></i>Market Prices
+            </a>
+            <a href="/chatbot" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-robot mr-2"></i>Chatbot
+            </a>
+            <a href="/rrb" class="block text-gray-700 hover:text-green-600 px-4 py-2">
+                <i class="fas fa-university mr-2"></i>RRB Info
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 max-w-2xl mx-auto">
+            <h1 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-cloud-sun text-yellow-500 mr-3"></i>
+                Weather Check
+            </h1>
+
+            <div class="space-y-6">
+                <div>
+                    <label for="cityInput" class="block text-sm font-medium text-gray-700 mb-2">Enter City Name</label>
+                    <div class="flex gap-4">
+                        <input 
+                            type="text" 
+                            id="cityInput" 
+                            placeholder="e.g., Mumbai, Delhi, Bangalore" 
+                            class="flex-1 p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        >
+                        <button 
+                            onclick="getWeather()"
+                            class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-green-700 transition shadow-sm flex items-center"
+                        >
+                            <i class="fas fa-search mr-2"></i>Check
+                        </button>
+                    </div>
+                </div>
+
+                <div id="weatherResult"></div>
+
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="font-semibold mb-2 flex items-center">
+                        <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+                        Weather Tips for Farmers
+                    </h2>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Monitor temperature for crop health</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Track humidity for disease prevention</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Check wind speed for spraying decisions</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i>Plan irrigation based on weather forecast</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        const WEATHER_API_KEY = "f00c38e0279b7bc85480c3fe775d518c";
+
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            const weatherResult = document.getElementById('weatherResult');
+            
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    weatherResult.innerHTML = `
+                        <div class="bg-gray-50 p-6 rounded-lg">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-semibold">${data.name}</h3>
+                                <img src="http://openweathermap.org/img/w/${data.weather[0].icon}.png" alt="Weather icon">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm text-gray-500">Temperature</p>
+                                    <p class="text-2xl font-semibold flex items-center">
+                                        <i class="fas fa-temperature-high text-red-500 mr-2"></i>
+                                        ${data.main.temp}°C
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Humidity</p>
+                                    <p class="text-2xl font-semibold flex items-center">
+                                        <i class="fas fa-tint text-blue-500 mr-2"></i>
+                                        ${data.main.humidity}%
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Wind Speed</p>
+                                    <p class="text-2xl font-semibold flex items-center">
+                                        <i class="fas fa-wind text-gray-500 mr-2"></i>
+                                        ${data.wind.speed} m/s
+                                    </p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Condition</p>
+                                    <p class="text-2xl font-semibold flex items-center">
+                                        <i class="fas fa-cloud text-gray-500 mr-2"></i>
+                                        ${data.weather[0].main}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    weatherResult.innerHTML = `
+                        <div class="bg-red-50 text-red-700 p-4 rounded-lg flex items-center">
+                            <i class="fas fa-exclamation-circle mr-2"></i>
+                            City not found. Please check the spelling and try again.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                weatherResult.innerHTML = `
+                    <div class="bg-red-50 text-red-700 p-4 rounded-lg flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        Error fetching weather data. Please try again later.
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

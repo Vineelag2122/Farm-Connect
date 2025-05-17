@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Rural Banks Information - Carrer Beacon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 0.5rem;
+        }
+        .rrb-card {
+            transition: all 0.3s;
+        }
+        .rrb-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-leaf mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/farmerdash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/weather" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-cloud-sun mr-1"></i>Weather
+                    </a>
+                    <a href="/soil" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-seedling mr-1"></i>Soil Analysis
+                    </a>
+                    <a href="/vegprices" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Market Prices
+                    </a>
+                    <a href="/chatbot" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-robot mr-1"></i>Chatbot
+                    </a>
+                    <a href="/rrb-info" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-university mr-1"></i>RRB Info
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center">
+                    <span class="text-gray-700 mr-4">Welcome, Farmer!</span>
+                    <a href="/logout" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button class="mobile-menu-button">
+                    <i class="fas fa-bars text-gray-500 text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu hidden md:hidden">
+            <a href="/farmerdash" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-home mr-2"></i>Home
+            </a>
+            <a href="/weather" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-cloud-sun mr-2"></i>Weather
+            </a>
+            <a href="/soil" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-seedling mr-2"></i>Soil Analysis
+            </a>
+            <a href="/vegprices" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-chart-line mr-2"></i>Market Prices
+            </a>
+            <a href="/chatbot" class="block text-gray-700 hover:text-green-600 px-4 py-2 border-b">
+                <i class="fas fa-robot mr-2"></i>Chatbot
+            </a>
+            <a href="/rrb-info" class="block text-gray-700 hover:text-green-600 px-4 py-2">
+                <i class="fas fa-university mr-2"></i>RRB Info
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+            <h1 class="text-2xl font-bold mb-6 flex items-center">
+                <i class="fas fa-university text-green-500 mr-3"></i>
+                Regional Rural Banks (RRBs)
+            </h1>
+            
+            <div class="prose max-w-none">
+                <p class="text-gray-600 mb-4">
+                    Regional Rural Banks (RRBs) are financial institutions that provide banking and financial services to rural areas. They were established to develop the rural economy by providing credit and other facilities for agriculture, trade, commerce, industry, and other productive activities in rural areas.
+                </p>
+                <p class="text-gray-600 mb-4">
+                    RRBs offer various services including:
+                </p>
+                <ul class="list-disc list-inside text-gray-600 mb-6">
+                    <li>Agricultural loans</li>
+                    <li>Small business loans</li>
+                    <li>Personal loans</li>
+                    <li>Savings accounts</li>
+                    <li>Fixed deposits</li>
+                    <li>Other banking services at affordable rates</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="bg-white rounded-xl shadow-sm p-8 mb-8">
+            <h2 class="text-xl font-semibold mb-4">RRB Locations</h2>
+            <div id="map"></div>
+        </div>
+
+        <!-- RRB List Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for rrb in rrbs %}
+            <div class="rrb-card bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-all" onclick="centerMap({{ rrb.lat }}, {{ rrb.lng }}, '{{ rrb.name }}')">
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ rrb.name }}</h3>
+                <p class="text-gray-600 mb-2"><i class="fas fa-map-marker-alt text-green-500 mr-2"></i>{{ rrb.headquarter }}</p>
+                <p class="text-gray-600"><i class="fas fa-map text-green-500 mr-2"></i>{{ rrb.districts }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+
+        // Map initialization
+        function initMap() {
+            // Create map centered on India
+            const map = L.map('map').setView([20.5937, 78.9629], 5);
+            
+            // Add the tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: ' OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Store map in window for access by other functions
+            window.rrbMap = map;
+
+            // Add markers for each RRB
+            {% for rrb in rrbs %}
+            (function() {
+                var lat = {{ rrb.lat }};
+                var lng = {{ rrb.lng }};
+                var name = {{ rrb.name|tojson|safe }};
+                var headquarter = {{ rrb.headquarter|tojson|safe }};
+                var districts = {{ rrb.districts|tojson|safe }};
+                
+                L.marker([lat, lng])
+                    .bindPopup("<strong>" + name + "</strong><br>Headquarter: " + headquarter + "<br>Districts: " + districts)
+                    .addTo(map);
+            })();
+            {% endfor %}
+        }
+
+        function centerMap(lat, lng, title) {
+            window.rrbMap.setView([lat, lng], 10);
+        }
+
+        // Initialize the map when the page loads
+        window.onload = initMap;
+    </script>
+</body>
+</html>

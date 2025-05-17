@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center">
+                    <a href="/farmerdash" class="text-xl font-bold text-green-600">
+                        <i class="fas fa-leaf mr-2"></i>Carrer Beacon
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/farmerdash" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-home mr-1"></i>Home
+                    </a>
+                    <a href="/weather" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-cloud-sun mr-1"></i>Weather
+                    </a>
+                    <a href="/soil" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-seedling mr-1"></i>Soil Analysis
+                    </a>
+                    <a href="/vegprices" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-chart-line mr-1"></i>Market Prices
+                    </a>
+                    <a href="/chatbot" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-robot mr-1"></i>Chatbot
+                    </a>
+                    <a href="/rrb" class="text-gray-700 hover:text-green-600 px-3 py-2 rounded-md font-medium">
+                        <i class="fas fa-university mr-1"></i>RRB Info
+                    </a>
+                </div>
+
+                <!-- User Menu -->
+                <div class="flex items-center">
+                    <span class="text-gray-700 mr-4">Welcome, Farmer!</span>
+                    <a href="/news" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-newspaper mr-1"></i>News
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button class="mobile-menu-button text-gray-500 hover:text-green-600 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div class="mobile-menu hidden md:hidden">
+                <a href="/farmerdash" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-home mr-1"></i>Home
+                </a>
+                <a href="/weather" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-cloud-sun mr-1"></i>Weather
+                </a>
+                <a href="/soil" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-seedling mr-1"></i>Soil Analysis
+                </a>
+                <a href="/vegprices" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-chart-line mr-1"></i>Market Prices
+                </a>
+                <a href="/chatbot" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-robot mr-1"></i>Chatbot
+                </a>
+                <a href="/rrb" class="block text-gray-700 hover:text-green-600 px-3 py-2">
+                    <i class="fas fa-university mr-1"></i>RRB Info
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6 dashboard-card border border-green-100">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 mr-4">
+                        <i class="fas fa-coins text-green-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Total Revenue</p>
+                        <p class="text-xl font-semibold">₹{{ revenue_data['total_revenue'] }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 dashboard-card border border-blue-100">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 mr-4">
+                        <i class="fas fa-shopping-cart text-blue-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Total Orders</p>
+                        <p class="text-xl font-semibold">{{ revenue_data['total_orders'] }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-xl shadow-sm p-6 dashboard-card border border-purple-100">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-purple-100 mr-4">
+                        <i class="fas fa-box text-purple-500 text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500">Total Quantity Sold</p>
+                        <p class="text-xl font-semibold">{{ revenue_data['total_quantity_sold'] }} kg</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Produce Form -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <h2 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-plus-circle text-green-500 mr-2"></i>
+                Post New Produce
+            </h2>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} mr-2"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('post_produce') }}" method="POST" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="produce_name" class="block text-sm font-medium text-gray-700 mb-2">Produce Name</label>
+                        <input type="text" id="produce_name" name="produce_name" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity (kg)</label>
+                        <input type="number" id="quantity" name="quantity" step="0.01" min="0" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    </div>
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price (₹/kg)</label>
+                        <input type="number" id="price" name="price" step="0.01" min="0" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium">
+                        <i class="fas fa-plus-circle mr-2"></i>Post Produce
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Posted Produce Table -->
+        <div class="bg-white rounded-xl shadow-sm p-6 dashboard-card mb-8">
+            <h2 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-list text-green-500 mr-2"></i>
+                Your Posted Produce
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">Name</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity (kg)</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price (₹/kg)</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">Posted On</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for produce in posted_produce %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ produce[1] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ produce[2] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ produce[3] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ produce[4] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Orders Placed Table -->
+        <div class="bg-white rounded-xl shadow-sm p-6 dashboard-card">
+            <h2 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-shopping-cart text-blue-500 mr-2"></i>
+                Orders Placed
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">Produce</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity (kg)</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price (₹/kg)</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total (₹)</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                            <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">Order Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for order in purchase_history %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ order[1] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ order[2] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ order[3] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ order[4] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ order[6] }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order[5] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% include 'chat_include.html' %}
+    <script src="{{ url_for('static', filename='js/voice.js') }}"></script>
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
